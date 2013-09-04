@@ -1,0 +1,37 @@
+alias ll='ls -l'
+alias la='ls -A'
+alias lt='ls -ltr'
+alias lla='ls -lA'
+alias l='ls -CF'
+alias h='history'
+alias j='jobs -l'
+alias t='tail -f'
+alias psf='ps auxf'
+alias po=popd
+alias pu=pushd
+alias c='clear'
+alias mn='matlab -nodesktop -nosplash'
+alias sl='screen -list'
+alias sr='screen -D -r'
+alias texspell='ispell -t'
+alias more='less'
+
+alias tl='tmux list-sessions'
+alias tr='tmux attach -t'
+alias tn='tmux new-session -s'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+alias hebb='ssh -Y hebb'
+alias teuber='ssh -Y teuber'
+alias gall='ssh -Y gall'
+alias luria='ssh -Y luria'
+alias postlab='ssh -Y postlab'
+alias pm='ssh -Y postlematlab'
+alias broadbent='ssh -Y broadbent'
+alias konorsky='ssh -Y konorsky'
+alias clayspace='ssh -Y clayspace.psych.nyu.edu'
+
+alias run-server='python -m SimpleHTTPServer 8888'

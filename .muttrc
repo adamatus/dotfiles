@@ -1,0 +1,80 @@
+# Password handling from:
+# https://zuttobenkyou.wordpress.com/2010/11/05/mutt-multiple-gmail-imap-setup/
+source "gpg --textmode -d .mutt/.passwd.gpg |"
+
+# Account hooks to handle multiple accounts
+account-hook . "unset imap_user; unset imap_pass; unset tunnel"
+account-hook "imaps://imap.gmail.com:993/" "\
+    set imap_user   = ariggall@gmail.com \
+        imap_pass   = $my_gmailpass \
+        smtp_url    = smtps://ariggall@gmail.com@smtp.gmail.com \
+        smtp_pass   = $my_gmailpass"
+account-hook "imaps://wiscmail.wisc.edu:993/" "\
+    set imap_user   = riggall \
+        imap_pass   = $my_wiscpass \
+        smtp_url    = smtps://riggall@smtpauth.wiscmail.wisc.edu \
+        smtp_pass   = $my_wiscpass"
+
+# Folders, mailboxes, and folder hooks
+set folder  = imaps://imap.gmail.com:993/
+mailboxes   = +INBOX =[Gmail]/Drafts =[Gmail]/'Sent Mail' 
+set spoolfile = +INBOX
+folder-hook imaps://imap.gmail.com:993/ "\
+    set folder      = imaps://imap.gmail.com:993/ \
+        spoolfile   = +INBOX \
+        postponed   = +[Gmail]/Drafts \
+        record      = +[Gmail]/'Sent Mail' \
+        from        = 'Adam Riggall <ariggall@gmail.com>' \
+        realname    = 'Adam Riggall' "
+set folder  = imaps://wiscmail.wisc.edu:993/
+mailboxes   = +INBOX = Drafts = Sent
+set spoolfile = +INBOX
+folder-hook imaps://wiscmail.wisc.edu:993/ "\
+    set folder      = imaps://wiscmail.wisc.edu:993/ \
+        spoolfile   = +INBOX \
+        postponed   = +Drafts \
+        record      = +Sent \
+        from        = 'Adam Riggall <riggall@wisc.edu>' \
+        realname    = 'Adam Riggall' "
+
+set header_cache =~/.mutt/cache/headers
+set message_cachedir =~/.mutt/cache/bodies
+set certificate_file =~/.mutt/certificates
+
+bind editor <space> noop
+macro index g1 "<change-folder>imaps://imap.gmail.com:993/INBOX<enter>" "Go to inbox"
+macro index g2 "<change-folder>imaps://wiscmail.wisc.edu:993/INBOX<enter>" "Go to inbox"
+bind index G imap-fetch-mail
+bind pager G imap-fetch-mail
+
+set move = no  #Stop asking to "move read messages to mbox"!
+set imap_keepalive = 900
+set mail_check = 120
+set sort = threads
+set sort_aux = last-date-received
+
+# Header stuff
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+hdr_order Date From To Cc
+
+auto_view text/html                                      # view html automatically
+alternative_order text/plain text/enriched text/html     # save html for last
+
+ignore *
+unignore from: date subject to cc
+unignore x-mailing-list: posted-to:
+unignore x-mailer:
+
+# For better looks
+set markers=no # don't put '+' at the beginning of wrapped lines
+set pager_index_lines= 5 # how large is the index window?
+set sort = 'threads'
+set sort_aux = 'last-date-received'
+
+# My Editor
+set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "?^$"'
+
+# Pretty solarized colors
+source .mutt/mutt-colors-solarized-dark-16.muttrc

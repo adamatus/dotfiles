@@ -1,0 +1,14 @@
+# Turn off the terrible bell!
+set bell-style visible
+
+# Ignore case and ask to display list if over 50 completions
+set completion-ignore-case on
+set completion-query-items 50
+
+# Make sure directories (and symlinked dirs) have trailing /
+set mark-directories on
+set mark-symlinked-directories on
+
+# Enable vi mode
+set editing-mode vi
+set keymap vi-command
